@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!--one-slider-->
+            <div>
+                <div>
+                    <div class="center-block ">
+                        <div class="slider ">
+
+                            <img src="{{ product.image.url }}" height="250px">
+                            <h4>{{ product.title }}</h4>
+                            <p>{{ product.price }}</p>
+                            <p>{{ product.description_long|safe }}</p>
+                            <hr>
+                            <a href="{% url 'orders:add_cart' product.slug %}" methods="post" class="btn btn-outline-info"> Add to Cart</a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+                        <br>
+                        <br>
+                        <br>
+                        <p>نظرات:</p>
+                        <br>
+                        <br>
+                        <br>
+                        {% for commend in commends %}
+                        <p>{{ commend.body|safe }}</p>
+
+                    </div>
+
+                    <div>
+                        {% if request.user.is_authenticated %}
+                        <form action="{% url 'pages:add_reply' product.id commend.id %}" method="post">
+                            {{ form_reply.as_p }}
+                            {% csrf_token %}
+                            <input type="submit" value="Send">
+                        </form>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% with replies=commend.reply_commend.all %}
+                        {% for reply in replies %}
+                        <p> {{reply.body}} </p>
+                        {% endfor %}
+                        {% endwith %}
+                        {% endfor %}
+                        <form action="" method="post">
+                            {{ form.as_p }}
+                            {% csrf_token %}
+                            <input type="submit" value="Send">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <br>
+</div>
+<div>
+
+</div>
+
+
+{% endblock %}

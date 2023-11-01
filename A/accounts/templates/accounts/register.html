@@ -1,0 +1,41 @@
+{% extends 'base.html' %}{% load static %}
+
+
+{% load jalali_tags %}
+{% block title %}ثبت نام {% endblock %}
+{% block head %}
+<link href="{% static 'style/d.css' %}" rel="stylesheet" type="text/css">
+<style>
+body{
+    background:rgb(177, 240, 233);
+}
+.class-children{
+align-items: center;
+align-content: center;
+padding-top: 1cm;
+
+align-self: start;
+text-align: center;
+margin: auto;
+}
+
+</style>
+
+
+{% endblock head %}
+{% block content %}
+
+<div>
+    <div class="class-children">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <span>{{ request.user.date_joined|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</span>
+            {{ form.media }}
+            <link rel="stylesheet" href="admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css">
+            <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+            <input type="submit" class="btn btn-outline-danger" value="SEND">
+        </form>
+    </div>
+</div>
+{% endblock %}

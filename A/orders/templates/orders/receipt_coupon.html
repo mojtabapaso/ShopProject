@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block head %}
+<style> .text{color:red;} </style>
+{% endblock head %}
+
+{% block content %}
+<table class="table col">
+    <tbody>
+    <tr>
+        <th scope="col">نام خریدار</th>
+        <td>{{ order.user.profile.first_name }}</td>
+    </tr>
+    <tr>
+        <th scope="col">فامیلی خریدار</th>
+        <td>{{ order.user.profile.last_name }}</td>
+    </tr>
+    <tr>
+        <th scope="col">شماره تلفن</th>
+        <td>{{ order.user }}</td>
+    </tr>
+    <tr>
+        <th scope="col">آدرس</th>
+        <td>{{ order.address }}</td>
+    </tr>
+    <tr>
+        <th>......</th>
+        <th scope="col">نام محصول</th>
+        <th scope="col">قیمت هر واحد</th>
+        <th scope="col">تعداد</th>
+        <th scope="col">قیمت کل</th>
+    </tr>
+    {% for item in order.items.all %}
+    <tr>
+
+        <th scope="col">{{ forloop.counter }}</th>
+
+        <td>{{ item.item.title }}</td>
+        <td>{{ item.item.price|intcomma:False }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price_item|intcomma:False }}</td>
+
+    </tr>
+    {% endfor %}
+
+    <tr>
+
+        <th scope="col">مبلغ قابل پرداخت</th>
+        <th colspan="3"></th>
+
+        <th >{{ order.all_price|intcomma:False }}</th>
+    </tr>
+
+{% if order.price_pey %}
+    <tr>
+        <td class="text"><strong>کد تخفیف شما اعمال شد</strong></td>
+        <td colspan="2"></td>
+        <td class="text">مبلغ قابل پرداخت جدید</td>
+        <td class="text"><strong> {{ order.price_pey|intcomma:False }}</strong></td>
+    </tr>
+{% endif %}
+    </tbody>
+
+</table>
+
+<form action="" method="post" novalidate>
+    {{ form.as_p }}
+    {% csrf_token %}
+
+    <input type="submit" value="اعمال" class="btn btn-outline-primary">
+</form>
+ <a class="btn btn-outline-danger" href="{% url 'orders:order_pay' order.id %}" >  پرداخت</a>
+{% endblock content %}

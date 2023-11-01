@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block head %}
+
+
+{% endblock head %}
+{% block category %}
+
+{% for item in categories %}
+
+
+<div class="btn-group" role="group">
+
+    <button id="btnGroupDrop1" type="button" class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown"
+            aria-expanded="false">
+        {{ item.name }}
+    </button>
+
+
+    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        {% for sub in item.scategory.all %}
+        <li><a class="dropdown-item" href="{{ sub.get_absolute_url }}">{{ sub.name }}</a></li>
+        {% endfor %}
+    </div>
+
+{% endfor %}
+
+
+{% endblock category %}
+
+{% block content %}
+{% for item in brand %}
+<a href="{% url 'pages:brand_slug' item.slug %}" class="btn btn-outline-dark">{{ item.name }}</a>
+{% endfor %}
+<hr>
+<!---------------product------------------->
+<div class="container">
+    <div class="row">
+        {% for item in products %}
+        <div class="col col-2">
+            <div class="card" style="width:100% ;">
+                <img class="card-img-top " src="{{ item.image.url }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.title }}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{ item.price|intcomma:False }} تومان <i class="icofont-price"></i></li>
+                </ul>
+                <div class="btn-group btn-sm">
+                    <!--button add to cart -->
+                    <a href="{% url 'orders:add_cart' item.slug %}" type="button"
+                       class="btn btn-col-6 btn-sm btn-outline-danger">افزودن</a>
+                    <!-- button info product -->
+                    <a href="{{ item.get_absolute_url }}" type="button" class="btn btn-col-4 btn-outline-info btn-sm">اطلاعات</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<form action="" novalidate>
+    {% csrf_token %}
+    min:{{ filter.filter_min }}
+    <hr>
+    max:{{ filter.filter_max }}
+    <br>
+    <input type="submit" value="فیلتر" class="btn btn-outline-info">
+</form>
+
+
+
+
+
+{% endblock %}
+
+

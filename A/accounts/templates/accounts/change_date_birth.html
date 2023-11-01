@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="" novalidate method="post">
+    {{ form.day }} {{ form.mount }} {{ form.year }}
+    {% csrf_token %}
+    <input type="submit" value="Send">
+</form>
+{% endblock %}
